@@ -1,14 +1,15 @@
 package shc.iz.community.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 
 @Data
+@Table(name = "DEASA0001")
+@Entity //JPA는 @Entity 어노테이션이 지정된 클래스만을 관리
 public class ServiceInfo {
     @Id
     @Column(name = "PBC_SV_ID")
@@ -73,11 +74,21 @@ public class ServiceInfo {
 
     @Column(name = "NI_RG_DT")
     @JsonProperty("NI_RG_DT")
-    private String niRgDt;
+    private LocalDateTime niRgDt;
 
     @Column(name = "LS_ALT_XCT_ID")
     private String lsAltXctId;
 
     @Column(name = "LS_ALT_DT")
     private LocalDateTime lsAltDt;
+
+    @PrePersist
+    public void prePersist() {
+        this.niRgDt = LocalDateTime.now();
+        this.lsAltDt = LocalDateTime.now();
+        this.niRgXctId = "000000";
+        this.lsAltXctId = "000000";
+    }
+
+
 }

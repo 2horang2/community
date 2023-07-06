@@ -1,4 +1,8 @@
 package shc.iz.community.repository;
 
-public class ServiceInfoRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import shc.iz.community.dto.ServiceInfo;
+
+public interface ServiceInfoRepository extends JpaRepository<ServiceInfo, String> {
+
 }
