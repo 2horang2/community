@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 
 @Data
-public class ServiceInfo {
+public class ServiceDetailInfo {
     @Id
     @Column(name = "PBC_SV_ID")
     @JsonProperty("서비스ID")
@@ -24,12 +24,16 @@ public class ServiceInfo {
     private String serviceName;
 
     @Column(name = "PBC_SV_PPS_NM")
-    @JsonProperty("서비스목적요약")
-    private String serviceSummary;
+    @JsonProperty("서비스목적")
+    private String servicePurpose;
+
+    @Column(name = "PBC_SV_PT_TRM_VL")
+    @JsonProperty("신청기한")
+    private String applicationDeadline;
 
     @Column(name = "PBC_SV_AID_BJ_NM")
     @JsonProperty("지원대상")
-    private String supportTarget;
+    private String targetAudience;
 
     @Column(name = "PBC_SV_CHO_TA_TT")
     @JsonProperty("선정기준")
@@ -43,29 +47,37 @@ public class ServiceInfo {
     @JsonProperty("신청방법")
     private String applicationMethod;
 
-    @Column(name = "PBC_SV_PT_TRM_VL")
-    @JsonProperty("신청기한")
-    private String applicationDeadline;
+    @Column(name = "PBC_SV_PT_EQH_PPE_NM")
+    @JsonProperty("구비서류")
+    private String requiredDocuments;
 
-    @Column(name = "PBC_SV_DL_QY_URL_VL")
-    @JsonProperty("상세조회URL")
-    private String detailedInquiryUrl;
+    @Column(name = "PBC_SV_RV_IE_NM")
+    @JsonProperty("접수기관명")
+    private String receivingAgency;
 
-    @Column(name = "PBC_SV_JUC_ICD_VL")
-    @JsonProperty("소관기관코드")
-    private String jurisdictionAgencyCode;
+    @Column(name = "PBC_SV_IUL_PON_VL")
+    @JsonProperty("전화문의")
+    private String inquiryPhoneNumber;
+
+    @Column(name = "PBC_SV_PT_URL_AR")
+    @JsonProperty("온라인신청사이트URL")
+    private String onlineApplicationUrl;
 
     @Column(name = "PBC_SV_JUC_IE_NM")
     @JsonProperty("소관기관명")
-    private String jurisdictionAgencyName;
+    private String supervisingAgency;
 
-    @Column(name = "PBC_SV_JUC_DP_NM")
-    @JsonProperty("부서명")
-    private String departmentName;
+    @Column(name = "PBC_SV_ADM_RGLT_NM")
+    @JsonProperty("행정규칙")
+    private String administrativeRegulation;
 
-    @Column(name = "PBC_SV_QY_CN_VL")
-    @JsonProperty("조회수")
-    private Integer queryCount;
+    @Column(name = "PBC_SV_THN_RGLT_NM")
+    @JsonProperty("시행규칙")
+    private String enforcementRegulation;
+
+    @Column(name = "PBC_SV_LAW_NM")
+    @JsonProperty("서비스명")
+    private String serviceName2;
 
     @Column(name = "NI_RG_XCT_ID")
     @JsonProperty("NI_RG_XCT_ID")
