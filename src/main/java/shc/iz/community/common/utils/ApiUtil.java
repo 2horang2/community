@@ -8,31 +8,24 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @Configuration
 @Slf4j
 public class ApiUtil {
 
-    @Value("${openapi.url}")
-    static String url;
+    public static <T> T requestWebFlux(URI uri, Class<T> responseType) {
+        WebClient webClient = WebClient.builder()
+                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(2 * 1024 * 1024))
+                .build();
 
-    @Value("${openapi.key.encoding}")
-    static String encodingKey;
-
-    @Value("${openapi.key.decoding}")
-    static String decdoingKey;
-
-    public URI makeOpenApiUri(String apiUri, int page, int perPage) {
-        String uriStr = url + apiUri + "?page=" + page + "&perPage=" + perPage + "&serviceKey="
-                + encodingKey;
-        URI uri = null;
-        try {
-            uri = new URI(uriStr);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return uri;
-
+        return webClient.get().uri(uri).accept(MediaType.APPLICATION_JSON_UTF8).retrieve()
+                .bodyToMono(responseType)
+                .block();
     }
-
 }
+
+
+

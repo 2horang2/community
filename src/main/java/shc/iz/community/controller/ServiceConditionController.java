@@ -12,9 +12,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import shc.iz.community.common.config.InitConfig;
 import shc.iz.community.common.utils.ApiUtil;
 import shc.iz.community.dto.ResponseVo;
-import shc.iz.community.dto.ServiceInfo;
+import shc.iz.community.dto.ServiceConditionInfoVo;
 import shc.iz.community.dto.ServiceInfoVo;
-import shc.iz.community.repository.ServiceInfoRepository;
+import shc.iz.community.repository.ServiceConditionInfoRepository;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -23,25 +23,27 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping(value = "/open-api/service-list")
-public class ServiceInfoController {
+public class ServiceConditionController {
 
     private final InitConfig initConfig;
-    private final ServiceInfoRepository serviceInfoRepository;
-    final String apiUri = "/gov24/v3/serviceList";
+    private final ServiceConditionInfoRepository serviceConditionInfoRepository;
+    final String apiUri = "/gov24/v3/supportConditions";
     final int perPage = 1000;
 
-    @GetMapping(value = "/webflux/initAllServiceList")
-    public ResponseEntity<ResponseVo> webfluxInitAllServiceList() throws Exception {
+    @GetMapping(value = "/webflux/initAllServiceConditionList")
+    public ResponseEntity<ResponseVo> webfluxInitAllServiceConditionList() throws Exception {
 
-        serviceInfoRepository.deleteAll();
+        serviceConditionInfoRepository.deleteAll();
+
         log.info("webflux start time : " + LocalDateTime.now());
-        ServiceInfoVo response = ApiUtil.requestWebFlux(initConfig.makeOpenApiUri(apiUri, 1, 1),ServiceInfoVo.class);
+        ServiceConditionInfoVo response = ApiUtil.requestWebFlux(initConfig.makeOpenApiUri(apiUri, 1, 1),ServiceConditionInfoVo.class);
         int totalCount = response.getTotalCount();
         for (int i = 1; i < totalCount / perPage + 2; i++) {
-            response = ApiUtil.requestWebFlux(initConfig.makeOpenApiUri(apiUri, i, perPage),ServiceInfoVo.class);
-            serviceInfoRepository.saveAll(response.getServiceInfoList());
+            response = ApiUtil.requestWebFlux(initConfig.makeOpenApiUri(apiUri, i, perPage),ServiceConditionInfoVo.class);
+            serviceConditionInfoRepository.saveAll(response.getServiceConditionInfoList());
         }
         log.info("webflux end time : " + LocalDateTime.now());
         return new ResponseEntity<>(new ResponseVo("00", "성공"), HttpStatus.OK);
     }
+
 }

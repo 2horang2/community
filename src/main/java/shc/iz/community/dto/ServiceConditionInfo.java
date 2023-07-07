@@ -1,14 +1,15 @@
 package shc.iz.community.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 
 @Data
+@Entity
+@Table(name = "DEASA0003")
 public class ServiceConditionInfo {
 
     @Id
@@ -170,10 +171,6 @@ public class ServiceConditionInfo {
     private String diseKf1;
 
 
-    @Column(name = "DISE_K_F1")
-    @JsonProperty("JA0323")
-    private String diseKF1;
-
     @Column(name = "DISE_K_F2")
     @JsonProperty("JA0324")
     private String diseKF2;
@@ -233,11 +230,20 @@ public class ServiceConditionInfo {
 
     @Column(name = "NI_RG_DT")
     @JsonProperty("NI_RG_DT")
-    private String niRgDt;
+    private LocalDateTime niRgDt;
 
     @Column(name = "LS_ALT_XCT_ID")
     private String lsAltXctId;
 
     @Column(name = "LS_ALT_DT")
     private LocalDateTime lsAltDt;
+
+    @PrePersist
+    public void prePersist() {
+        this.niRgDt = LocalDateTime.now();
+        this.lsAltDt = LocalDateTime.now();
+        this.niRgXctId = "000000";
+        this.lsAltXctId = "000000";
+    }
+
 }
