@@ -1,14 +1,15 @@
 package shc.iz.community.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 
 @Data
+@Table(name = "DEASA0002")
+@Entity
 public class ServiceDetailInfo {
     @Id
     @Column(name = "PBC_SV_ID")
@@ -56,7 +57,7 @@ public class ServiceDetailInfo {
     private String receivingAgency;
 
     @Column(name = "PBC_SV_IUL_PON_VL")
-    @JsonProperty("전화문의")
+    @JsonProperty("문의처") //전화문의에서 수정
     private String inquiryPhoneNumber;
 
     @Column(name = "PBC_SV_PT_URL_AR")
@@ -72,24 +73,27 @@ public class ServiceDetailInfo {
     private String administrativeRegulation;
 
     @Column(name = "PBC_SV_THN_RGLT_NM")
-    @JsonProperty("시행규칙")
+    @JsonProperty("법령") //시행규칙에서 수정
     private String enforcementRegulation;
 
-    @Column(name = "PBC_SV_LAW_NM")
-    @JsonProperty("서비스명")
-    private String serviceName2;
 
     @Column(name = "NI_RG_XCT_ID")
-    @JsonProperty("NI_RG_XCT_ID")
     private String niRgXctId;
 
     @Column(name = "NI_RG_DT")
-    @JsonProperty("NI_RG_DT")
-    private String niRgDt;
+    private LocalDateTime niRgDt;
 
     @Column(name = "LS_ALT_XCT_ID")
     private String lsAltXctId;
 
     @Column(name = "LS_ALT_DT")
     private LocalDateTime lsAltDt;
+
+    @PrePersist
+    public void prePersist() {
+        this.niRgDt = LocalDateTime.now();
+        this.lsAltDt = LocalDateTime.now();
+        this.niRgXctId = "000000";
+        this.lsAltXctId = "000000";
+    }
 }
