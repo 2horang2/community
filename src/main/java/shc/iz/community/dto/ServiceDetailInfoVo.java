@@ -18,5 +18,5 @@ public class ServiceDetailInfoVo {
     int currentCount;
     int matchCount;
     @JsonProperty("data")
-    ArrayList<ServiceDetailInfo> serviceDetailInfoList = new ArrayList<>();
+    ArrayList<ServiceDetailInfo> dataList = new ArrayList<>();
 }
