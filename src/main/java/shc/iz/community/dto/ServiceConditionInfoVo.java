@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceConditionInfoVo {
+public class ServiceConditionInfoVo  {
     int page;
     int perPage;
     int totalCount;
     int currentCount;
     int matchCount;
     @JsonProperty("data")
-    ArrayList<ServiceConditionInfo> serviceConditionInfoList = new ArrayList<>();
+    ArrayList<ServiceConditionInfo> dataList = new ArrayList<>();
 }
