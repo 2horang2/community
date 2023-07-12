@@ -80,6 +80,10 @@ public class ServiceInfo {
     @Column(name = "PBC_SV_TAG")
     private String serviceTag;
 
+
+    @Column(name = "EL_F")
+    private String elF;
+
     @Column(name = "LS_ALT_XCT_ID")
     private String lsAltXctId;
 
@@ -92,6 +96,7 @@ public class ServiceInfo {
         this.lsAltDt = LocalDateTime.now();
         this.niRgXctId = "000000";
         this.lsAltXctId = "000000";
+        this.elF="N";
     }
 
 

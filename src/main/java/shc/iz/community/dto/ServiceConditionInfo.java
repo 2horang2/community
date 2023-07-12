@@ -223,6 +223,8 @@ public class ServiceConditionInfo {
     @JsonProperty("JA0414")
     private String ftuFrmCcd9;
 
+    @Column(name = "EL_F")
+    private String elF;
 
     @Column(name = "NI_RG_XCT_ID")
     @JsonProperty("NI_RG_XCT_ID")

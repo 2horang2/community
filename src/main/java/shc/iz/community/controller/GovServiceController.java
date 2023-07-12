@@ -17,6 +17,8 @@ import shc.iz.community.dto.ServiceInfoVo;
 import shc.iz.community.repository.ServiceConditionInfoRepository;
 import shc.iz.community.repository.ServiceDetailInfoRepository;
 import shc.iz.community.repository.ServiceInfoRepository;
+import shc.iz.community.service.ServiceConditionInfoService;
+import shc.iz.community.service.ServiceDetailInfoService;
 import shc.iz.community.service.ServiceInfoService;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -37,6 +39,10 @@ public class GovServiceController {
     private final ServiceInfoRepository serviceInfoRepository;
 
     private final ServiceInfoService serviceInfoService;
+
+    private final ServiceDetailInfoService serviceDetailInfoService;
+
+    private final ServiceConditionInfoService serviceConditionInfoService;
     @Value("${openapi.condition-url}")
     String apiConditionUri;
 
@@ -58,7 +64,8 @@ public class GovServiceController {
     @GetMapping(value = "/initAllServiceList")
     public ResponseEntity<ResponseVo> initAllServiceList() {
 
-        ApiUtil.deleteAllData(serviceInfoRepository);
+        serviceInfoRepository.updateAllElFToY();
+
         AtomicReference<ServiceInfoVo> response = new AtomicReference<>(ApiUtil.requestWebFlux(initConfig.makeOpenApiUri(apiBaseUri, 1, 1), ServiceInfoVo.class));
 
         log.info("DATA 총 개수 : " + response.get().getTotalCount());
@@ -69,7 +76,8 @@ public class GovServiceController {
                     } catch (Exception e) {
                         ApiUtil.commonException(serviceInfoRepository, e);
                     }
-                    ApiUtil.saveDataList( serviceInfoService.updateServiceTagList(response.get().getDataList()), serviceInfoRepository);
+                    ApiUtil.saveDataList( serviceInfoService.updateData(response.get().getDataList()), serviceInfoRepository);
+
                     log.info("공공서비스 기본정보 API " + page * 1000 + " 번째 적재 완료 ");
                 });
 
@@ -86,7 +94,7 @@ public class GovServiceController {
     @GetMapping(value = "/initAllServiceDetailList")
     public ResponseEntity<ResponseVo> initAllServiceDetailList() {
 
-        ApiUtil.deleteAllData(serviceDetailInfoRepository);
+        serviceDetailInfoRepository.updateAllElFToY();
 
         AtomicReference<ServiceDetailInfoVo> response = new AtomicReference<>(ApiUtil.requestWebFlux(initConfig.makeOpenApiUri(apiBaseUri, 1, 1), ServiceDetailInfoVo.class));
         log.info("DATA 총 개수 : " + response.get().getTotalCount());
@@ -95,9 +103,9 @@ public class GovServiceController {
                     try {
                         response.set(ApiUtil.requestWebFlux(initConfig.makeOpenApiUri(apiDetailUri, page, perPage), ServiceDetailInfoVo.class));
                     } catch (Exception e) {
-                        ApiUtil.commonException(serviceInfoRepository, e);
+                        ApiUtil.commonException(serviceDetailInfoRepository, e);
                     }
-                    ApiUtil.saveDataList(response.get().getDataList(), serviceDetailInfoRepository);
+                    ApiUtil.saveDataList(serviceDetailInfoService.updateData(response.get().getDataList()), serviceDetailInfoRepository);
                     log.info("공공서비스 상세정보 API " + page * 1000 + " 번째 적재 완료 ");
                 });
 
@@ -112,7 +120,8 @@ public class GovServiceController {
     @GetMapping(value = "/initAllServiceConditionList")
     public ResponseEntity<ResponseVo> initAllServiceConditionList() {
 
-        ApiUtil.deleteAllData(serviceConditionInfoRepository);
+        serviceConditionInfoRepository.updateAllElFToY();
+
         AtomicReference<ServiceConditionInfoVo> response = new AtomicReference<>(ApiUtil.requestWebFlux(initConfig.makeOpenApiUri(apiConditionUri, 1, 1), ServiceConditionInfoVo.class));
 
         log.info("DATA 총 개수 : " + response.get().getTotalCount());
@@ -121,9 +130,9 @@ public class GovServiceController {
                     try {
                         response.set(ApiUtil.requestWebFlux(initConfig.makeOpenApiUri(apiConditionUri, page, perPage), ServiceConditionInfoVo.class));
                     } catch (Exception e) {
-                        ApiUtil.commonException(serviceInfoRepository, e);
+                        ApiUtil.commonException(serviceConditionInfoRepository, e);
                     }
-                    ApiUtil.saveDataList(response.get().getDataList(), serviceConditionInfoRepository);
+                    ApiUtil.saveDataList(serviceConditionInfoService.updateData(response.get().getDataList()), serviceConditionInfoRepository);
                     log.info("공공서비스 지원조건 API " + page * 1000 + " 번째 적재 완료 ");
                 });
 
