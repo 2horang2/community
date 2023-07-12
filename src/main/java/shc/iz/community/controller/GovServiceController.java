@@ -17,6 +17,7 @@ import shc.iz.community.dto.ServiceInfoVo;
 import shc.iz.community.repository.ServiceConditionInfoRepository;
 import shc.iz.community.repository.ServiceDetailInfoRepository;
 import shc.iz.community.repository.ServiceInfoRepository;
+import shc.iz.community.service.ServiceInfoService;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
@@ -34,6 +35,8 @@ public class GovServiceController {
     private final ServiceConditionInfoRepository serviceConditionInfoRepository;
     private final ServiceDetailInfoRepository serviceDetailInfoRepository;
     private final ServiceInfoRepository serviceInfoRepository;
+
+    private final ServiceInfoService serviceInfoService;
     @Value("${openapi.condition-url}")
     String apiConditionUri;
 
@@ -66,12 +69,14 @@ public class GovServiceController {
                     } catch (Exception e) {
                         ApiUtil.commonException(serviceInfoRepository, e);
                     }
-                    ApiUtil.saveDataList(response.get().getDataList(), serviceInfoRepository);
+                    ApiUtil.saveDataList( serviceInfoService.updateServiceTagList(response.get().getDataList()), serviceInfoRepository);
                     log.info("공공서비스 기본정보 API " + page * 1000 + " 번째 적재 완료 ");
                 });
 
         return new ResponseEntity<>(new ResponseVo("00", "성공"), HttpStatus.OK);
     }
+
+
 
     /**
      * WebFlux를 사용하여 모든 서비스 상세 목록을 초기화하기 위한 엔드포인트입니다.
@@ -95,7 +100,6 @@ public class GovServiceController {
                     ApiUtil.saveDataList(response.get().getDataList(), serviceDetailInfoRepository);
                     log.info("공공서비스 상세정보 API " + page * 1000 + " 번째 적재 완료 ");
                 });
-
 
         return new ResponseEntity<>(new ResponseVo("00", "성공"), HttpStatus.OK);
     }
@@ -125,6 +129,40 @@ public class GovServiceController {
 
         return new ResponseEntity<>(new ResponseVo("00", "성공"), HttpStatus.OK);
     }
+
+    /*
+
+    @GetMapping(value = "/updateAllServiceTagList")
+    public ResponseEntity<ResponseVo> updateAllServiceTagList() {
+
+        List<ServiceInfo> serviceInfoList = serviceInfoRepository.findAll();
+
+        for (ServiceInfo serviceInfo : serviceInfoList) {
+            String serviceName = serviceInfo.getServiceName();
+            Set<String> matchedTags = new HashSet<>();
+
+            for (Map.Entry<String, Set<String>> entry : TagConditionConfig.serviceTags.entrySet()) {
+                String keyword = entry.getKey();
+                Set<String> tags = entry.getValue();
+                if (serviceName.contains(keyword)) {
+                    matchedTags.addAll(tags);
+                }
+            }
+
+            List<String> serviceTagList = new ArrayList<>();
+            for (String tag : matchedTags) {
+                serviceTagList.add("#" + tag);
+            }
+            Collections.sort(serviceTagList);
+            String tagListString = StringUtils.collectionToDelimitedString(serviceTagList, " ");
+            serviceInfo.setServiceTag(tagListString);
+            serviceInfoRepository.save(serviceInfo);
+        }
+
+        return new ResponseEntity<>(new ResponseVo("00", "성공"), HttpStatus.OK);
+    }
+
+     */
 
 
 }

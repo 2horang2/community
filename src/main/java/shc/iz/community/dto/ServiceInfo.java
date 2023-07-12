@@ -76,6 +76,10 @@ public class ServiceInfo {
     @JsonProperty("NI_RG_DT")
     private LocalDateTime niRgDt;
 
+
+    @Column(name = "PBC_SV_TAG")
+    private String serviceTag;
+
     @Column(name = "LS_ALT_XCT_ID")
     private String lsAltXctId;
 
