@@ -76,6 +76,8 @@ public class ServiceDetailInfo {
     @JsonProperty("법령") //시행규칙에서 수정
     private String enforcementRegulation;
 
+    @Column(name = "EL_F")
+    private String elF;
 
     @Column(name = "NI_RG_XCT_ID")
     private String niRgXctId;

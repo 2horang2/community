@@ -25,24 +25,26 @@ public class ApiUtil {
                 .block();
     }
 
-    public static void deleteAllData(JpaRepository<?,?> repository){
-        try {
-            repository.deleteAll();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new CustomException(ErrorCode.DELETE_ERROR);
-        }
-    }
+//    public static void deleteAllData(JpaRepository<?,?> repository){
+//        try {
+//            repository.deleteAll();
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//            throw new CustomException(ErrorCode.DELETE_ERROR);
+//        }
+//    }
 
-    public static void commonException(JpaRepository<?,?> repository,Exception e){
+    public static void commonException(JpaRepository<?, ?> repository, Exception e) {
         log.error(e.getMessage());
-        ApiUtil.deleteAllData(repository);
+        //ApiUtil.deleteAllData(repository);
         throw new CustomException(ErrorCode.API_ERROR);
     }
 
 
     public static <T> void saveDataList(List<T> dataList, JpaRepository<T, ?> repository) {
         try {
+
+
             repository.saveAll(dataList);
         } catch (Exception e) {
             ApiUtil.commonException(repository, e);
