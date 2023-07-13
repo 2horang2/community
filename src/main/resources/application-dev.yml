@@ -22,9 +22,9 @@ logging:
     console: "%white([%d{yyyy-MM-dd HH:mm:ss}]) %yellow([%thread]) %highlight([%-5level]) %white([%-35logger{35}]) %white(%msg  %n)"
   level:
     root: WARN
-    shc.iz: DEBUG
+    shc.iz: INFO
     jpa: ERROR
     org:
       springframework:
         orm:
-          jpa: DEBUG
+          jpa: INFO

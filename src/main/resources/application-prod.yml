@@ -1,1 +1,30 @@
-
+project:
+  envCcd: P
+server:
+  port: 8080
+  servlet:
+    encoding:
+      force-response: true
+spring:
+  codec:
+    max-in-memory-size: 10MB
+  datasource:
+    url: jdbc:mysql://localhost:3306/community
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+logging:
+  pattern:
+    console: "%white([%d{yyyy-MM-dd HH:mm:ss}]) %yellow([%thread]) %highlight([%-5level]) %white([%-35logger{35}]) %white(%msg  %n)"
+  level:
+    root: WARN
+    shc.iz: INFO
+    jpa: ERROR
+    org:
+      springframework:
+        orm:
+          jpa: INFO

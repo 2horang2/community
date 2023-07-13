@@ -17,18 +17,23 @@ import java.util.Optional;
 public class ServiceConditionInfoService {
 
     private final ServiceConditionInfoRepository serviceConditionInfoRepository;
-    public List<ServiceConditionInfo> updateData(List<ServiceConditionInfo> dataList ){
+
+    public List<ServiceConditionInfo> updateData(List<ServiceConditionInfo> dataList) {
 
         List<ServiceConditionInfo> updatedList = new ArrayList<>();
         for (ServiceConditionInfo data : dataList) {
 
-            Optional<ServiceConditionInfo> existedData = serviceConditionInfoRepository.findById(data.getServiceId());
-            data.setNiRgDt(existedData.isEmpty()?LocalDateTime.now():existedData.get().getNiRgDt());
-            data.setNiRgXctId("000000");
-            data.setElF("N");
-            data.setLsAltXctId("000000");
-            data.setLsAltDt(LocalDateTime.now());
-            updatedList.add(data);
+            try {
+                Optional<ServiceConditionInfo> existedData = serviceConditionInfoRepository.findById(data.getServiceId());
+                data.setNiRgDt(existedData.isEmpty() ? LocalDateTime.now() : existedData.get().getNiRgDt());
+                data.setNiRgXctId("000000");
+                data.setElF("N");
+                data.setLsAltXctId("000000");
+                data.setLsAltDt(LocalDateTime.now());
+                updatedList.add(data);
+            } catch (Exception e) {
+                log.error((data.getServiceId()) + " 해당 데이터 이슈로 적재 SKIP");
+            }
 
         }
         return updatedList;

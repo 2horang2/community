@@ -72,7 +72,7 @@ public class GovServiceController {
         IntStream.rangeClosed(1, response.get().getTotalCount() / perPage + 1)
                 .forEach(page -> {
                     try {
-                        response.set(ApiUtil.requestWebFlux(initConfig.makeOpenApiUri(apiDetailUri, page, perPage), ServiceInfoVo.class));
+                        response.set(ApiUtil.requestWebFlux(initConfig.makeOpenApiUri(apiBaseUri, page, perPage), ServiceInfoVo.class));
                     } catch (Exception e) {
                         ApiUtil.commonException(serviceInfoRepository, e);
                     }
@@ -96,7 +96,7 @@ public class GovServiceController {
 
         serviceDetailInfoRepository.updateAllElFToY();
 
-        AtomicReference<ServiceDetailInfoVo> response = new AtomicReference<>(ApiUtil.requestWebFlux(initConfig.makeOpenApiUri(apiBaseUri, 1, 1), ServiceDetailInfoVo.class));
+        AtomicReference<ServiceDetailInfoVo> response = new AtomicReference<>(ApiUtil.requestWebFlux(initConfig.makeOpenApiUri(apiDetailUri, 1, 1), ServiceDetailInfoVo.class));
         log.info("DATA 총 개수 : " + response.get().getTotalCount());
         IntStream.rangeClosed(1, response.get().getTotalCount() / perPage + 1)
                 .forEach(page -> {
